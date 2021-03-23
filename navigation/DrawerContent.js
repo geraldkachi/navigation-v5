@@ -19,7 +19,7 @@ import { AuthContext }  from "../components/Context"
 
         const { signOut } = React.useContext(AuthContext)
 
-        // const [isDarkTheme , setIsDarkTheme] = React.useState(false)
+        const [isDarkTheme , setIsDarkTheme] = React.useState(false)
 
         const toggleTheme = () => {
             setIsDarkTheme(!isDarkTheme)

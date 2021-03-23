@@ -3,46 +3,81 @@ import { StyleSheet, Text, View, Button,StatusBar, Platform,TextInput, Touchable
 import FontAwesome from "react-native-vector-icons/FontAwesome"
 import Feather from "react-native-vector-icons/Feather"
 
+import * as Animatable from "react-native-animatable"
+
+import { AuthContext } from "../components/Context"
+import Users from '../usermodal/UserModal'
+
 const SignUpScreen = ({navigation}) => {
+
+    const { signIn } = React.useContext(AuthContext)
 
       // EMAIL LOGIC
       const [data, setData] = React.useState({
-        emai: "",
+        email: "",
         password:"",
         confirm_password:"",
         check_textInputChange: false,
         secureTextEntry: true,
         confirm_secureTextEntry: true,
+
+        isValidUser: true,
+        isValidPassword: true,
+        isValidComfirmPassword: true
     })
 
     const TextInputChange = (val) => { 
-        if(val.lenght !== 0) {
+        if(val.trim().length >= 4) {
             setData({
                 ...data,
                 email: val,
-                check_textInputChange: true
+                username: val,
+                check_textInputChange: true,
+                isValidUser: true
             })
         } else {
             setData({
                 ...data,
                 email: val,  
-                check_textInputChange: false
+                username: val,
+                check_textInputChange: false,
+                isValidUser: false
             })
         }
     }
     // PASSWORD LOGIC
     const handlePassword = (val) => {
-       setData({
-        ...data, 
-        password: val,
-       })
+      if (val.trim().length >= 8) {
+        setData({
+            ...data, 
+            password: val,
+            isValidPassword: true
+           })
+      } else {
+        setData({
+            ...data, 
+            password: val,
+            isValidPassword: false
+           })
+      }
     }
       // CONFIRM PASSWORD LOGIC
     const handleConfirmPassword = (val) => {
-       setData({
-        ...data, 
-        confirm_password: val,
-       })
+       if (val.trim().length >= 8) {
+        setData({
+            ...data, 
+            confirm_password: val,
+            // isValidPassword: true,
+            isValidComfirmPassword: true
+           })
+       } else {
+        setData({
+            ...data, 
+            confirm_password: val,
+            // isValidPassword: false,
+            isValidComfirmPassword: false
+           })
+       }
     }
     const updateSecureTextEntry = () => {
         setData({
@@ -57,6 +92,46 @@ const SignUpScreen = ({navigation}) => {
         })
     } 
 
+    // ERROR MESSAGE
+    const handleValidUser = (val) => {
+        if (val.trim().length >= 4) {
+            setData({
+                ...data,
+                isValidUser: true
+            })
+        } else {
+            setData({
+                ...data,
+                isValidUser: false
+            })
+        }
+    }
+    ///////////////////////////////////////////
+    const signUpHandle = (userName, password) => {
+        const foundUser = Users.filter(item => {
+            return userName == item.username,item.email && password == item.password, item.confirm_password;
+        })
+
+        if (data.username.length == 0 || data.password.length == 0) {
+            Alert.alert('Wrong Input!', 'Username or password cannot be empty.', [
+                {text: 'Yes Okay', onPress : () => console.log('pressed okay') },
+                {text: 'No Okay', onPress : () => console.log('pressed okay') }
+            ])
+            return;
+        }
+
+        if (foundUser.length == 0) {
+            Alert.alert('Invalid User!', 'Username or password is incorrect', [
+                {text: 'Yes Okay', onPress : () => console.log('pressed okay') },
+                {text: 'No Okay', onPress : () => console.log('pressed okay') }
+            ])
+            return;
+        }
+
+        signIn(foundUser)
+    }
+    //////////////////////////////////////////////
+
 
     return (
         <View style={styles.container}> 
@@ -64,21 +139,29 @@ const SignUpScreen = ({navigation}) => {
             <View style={styles.header}>
                 <Text style={styles.text_header}>Register Now!</Text> 
             </View>
-            <View style={styles.footer}>
+            <Animatable.View animation="fadeInUpBig" style={styles.footer}>
                 <Text style={styles.text_footer}>Email</Text>
                 <View style={styles.action}>
                     <FontAwesome name="user-o" color="#05375a" size={20} />
-                    <TextInput placeholder="Email" style={styles.textInput} onChangeText={(val)=> TextInputChange(val)} />
+                    <TextInput placeholder="Email or Username" style={styles.textInput} onChangeText={(val)=> TextInputChange(val)} onEndEditing={e => handleValidUser(e.nativeEvent.text)} />
                    { data.check_textInputChange ?  
-                   <Feather name="check-circle" color="grey" size={20} /> 
+                   <Animatable.View
+                   animation="bounceIn">
+                       <Feather name="check-circle" color="green" size={20} /> 
+                   </Animatable.View>
                    : null 
                    }
                 </View>
+                {data.isValidUser ? (null) : (
+                   <Animatable.View animation="fadeInLeft" duration={500}>
+                        <Text style={styles.errorMsg}>Username must be 4 characters long.</Text>
+                   </Animatable.View>
+                )}
                 {/* Password */}
                 <Text style={[styles.text_footer, {marginTop: 35}]}>Password</Text>
                 <View style={styles.action}>
                     <FontAwesome name="lock" color="#05375a" size={20} />
-                    <TextInput placeholder="Password" secureTextEntry={data.secureTextEntry ? true : false} autoCapitalize="none" onChangeText={(val)=> handlePassword(val)} style={styles.textInput} />
+                    <TextInput style={styles.textInput} placeholder="Password" secureTextEntry={data.secureTextEntry ? true : false} autoCapitalize="none" onChangeText={(val)=> handlePassword(val)} />
                     <TouchableOpacity onPress={updateSecureTextEntry}>
                         {data.secureTextEntry ?
                         <Feather name="eye-off" color="grey" size={20} /> 
@@ -87,6 +170,12 @@ const SignUpScreen = ({navigation}) => {
                         }
                     </TouchableOpacity>
                 </View>
+                {data.isValidPassword ? (null) : (
+                    <Animatable.View animation="fadeInLeft" duration={500}>
+                        <Text style={styles.errorMsg}>Password must be 8 characters long.</Text>
+                   </Animatable.View>
+                     )} 
+
                 {/*Confirm Password */}
                 <Text style={[styles.text_footer, {marginTop: 35}]}>Confirm Password</Text>
                 <View style={styles.action}>
@@ -100,20 +189,29 @@ const SignUpScreen = ({navigation}) => {
                         }
                     </TouchableOpacity>
                 </View>
+                {data.isValidComfirmPassword ? (null) : (
+                    <Animatable.View animation="fadeInLeft" duration={500}>
+                        <Text style={styles.errorMsg}>Comfirm Password must be 8 characters long.</Text>
+                   </Animatable.View>
+                     )} 
                     
                     {/* SIGN UP */}
                 <View style={styles.button}>
                     {/*  */}
-                    <TouchableOpacity style={[styles.signIn, {backgroundColor:"#009387"}]} onPress={()=> navigation.navigate("SignInScreen")}>
+                    <TouchableOpacity style={[styles.signIn, {backgroundColor:"#009387"}]} 
+                    // onPress={()=> navigation.navigate("SignInScreen")}
+                    // onPress={()=> signIn()}
+                    onPress={()=> {signUpHandle(data.username, data.password)}}
+                    >
                             <Text style={[styles.textSign,{color:"#fff"}]}>SIgn Up</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.signIn,{borderColor:"#009387", borderWidth:1, marginTop:15}]} onPress={()=> navigation.navigate("ExploreScreen")}>
+                    <TouchableOpacity style={[styles.signIn,{borderColor:"#009387", borderWidth:1, marginTop:15}]} onPress={()=> navigation.navigate("SignInScreen")}>
                         <View style={{flexDirection:"row",justifyContent:"space-between", textAlign:"center"}}>
                             <Text style={[styles.textSign,{color:"#009387"}]}>SIgn In</Text>
                         </View>  
                     </TouchableOpacity>
                 </View>
-            </View>
+            </Animatable.View>
             {/* <Button title="Click SignInScreen" onPress={()=> navigation.navigate("")} /> */}
         </View>
     )
@@ -178,5 +276,8 @@ const styles = StyleSheet.create({
     textSign: {
         fontSize: 18,
         fontWeight: "bold"
+    },
+    errorMsg:{
+        color:'red'
     }
 })

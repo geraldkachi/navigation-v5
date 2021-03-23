@@ -2,27 +2,36 @@ import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions, Image, Button,Alert } from 'react-native'
 // import LinearGradient from "react-native-linear-gradient"
 import Icon from "react-native-vector-icons/MaterialIcons"
+import * as Animatable from "react-native-animatable"
+// import LinearGradient from 'react-native-linear-gradient'
+import { LinearGradient } from "expo-linear-gradient"
+
 
 const SplashScreen = ({navigation}) => {
     return (
         <View style={styles.container}>
-           <View style={styles.header}>
-               <View style={{borderRadius: 50,}}>
-               <Image source={require("../assets/splash.png")} style={styles.logo}  resizeMode="stretch" />
+           <Animatable.View style={styles.header}>
+               <View style={{borderRadius: 50}}>
+               <Animatable.Image
+               animation='bounceIn' duration="3500"
+                source={require("../assets/splash.png")} style={styles.logo}  resizeMode="stretch" />
                </View>
-           </View>
-           <View style={styles.footer}>
+           </Animatable.View>
+           <Animatable.View animation="fadeInUpBig"
+            style={styles.footer}>
                <Text style={styles.title}>Stay connected with everyone!</Text>
                <Text style={styles.text}>Sign in with account</Text>
                 <View style={styles.button}>
                     <TouchableOpacity style={[styles.signIn,styles.ban]} onPress={()=> navigation.navigate("SignInScreen")}>
                         <View style={{flexDirection:"row",justifyContent:"space-between", textAlign:"center"}}>
-                            <Text style={[styles.textbutton,styles.buttonCenter]}>Get Started</Text>
-                            <Icon name="keyboard-arrow-right" color="#fff" size={30} />
+                            <LinearGradient colors={['#08d4c4', '#01ab9d']} style={styles.signIn}>
+                            <Text style={styles.textSign}>Get Started</Text>
+                            <Icon name="navigate-next" color="#fff" size={20} />
+                            </LinearGradient>
                         </View>  
                     </TouchableOpacity>
                 </View>
-           </View>
+           </Animatable.View>
         </View>
     )
 }
