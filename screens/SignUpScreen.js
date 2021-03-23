@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, Button,StatusBar, Platform,TextInput, TouchableOpacity, Dimensions} from 'react-native'
+import { Alert,StyleSheet, Text, View, Button,StatusBar, Platform,TextInput, TouchableOpacity, Dimensions} from 'react-native'
 import FontAwesome from "react-native-vector-icons/FontAwesome"
 import Feather from "react-native-vector-icons/Feather"
 
@@ -15,6 +15,7 @@ const SignUpScreen = ({navigation}) => {
       // EMAIL LOGIC
       const [data, setData] = React.useState({
         email: "",
+        username: '',
         password:"",
         confirm_password:"",
         check_textInputChange: false,

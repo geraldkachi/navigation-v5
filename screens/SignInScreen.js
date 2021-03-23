@@ -15,6 +15,7 @@ const SignInScreen = ({navigation}) => {
     // EMAIL LOGIC
     const [data, setData] = React.useState({
         email: "",
+        username: '',
         password:"",
         check_textInputChange: false,
         secureTextEntry: true,
