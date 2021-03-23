@@ -5,6 +5,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 import { 
     Avatar, 
     Title, 
+    useTheme,
     Caption, 
     Paragraph, 
     Drawer, 
@@ -17,13 +18,16 @@ import { AuthContext }  from "../components/Context"
     
     export const DrawerContent = (props) => {
 
-        const { signOut } = React.useContext(AuthContext)
+        const paperTheme = useTheme()
 
-        const [isDarkTheme , setIsDarkTheme] = React.useState(false)
+        const { signOut, toggleTheme } = React.useContext(AuthContext)
 
-        const toggleTheme = () => {
-            setIsDarkTheme(!isDarkTheme)
-        }
+        // const [isDarkTheme , setIsDarkTheme] = React.useState(false)   
+        //  its now in the App.js app level state 
+
+        // const toggleTheme = () => {
+        //     setIsDarkTheme(!isDarkTheme)
+        // }
 
     return (
         <View style={{flex:1}}>
@@ -74,7 +78,7 @@ import { AuthContext }  from "../components/Context"
                            <View style={styles.perference}>
                                     <Text>Dark Theme</Text>
                                <View pointerEvents="none">
-                                    <Switch value={isDarkTheme} />
+                                    <Switch value={paperTheme.dark} />
                                </View>
                            </View>
                        </TouchableRipple>

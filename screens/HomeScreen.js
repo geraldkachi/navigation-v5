@@ -1,21 +1,27 @@
-import React from 'react'
-import { StyleSheet, Text, View, Button } from 'react-native'
+import React from "react";
+import { StyleSheet, Text, View, Button } from "react-native";
+import { useTheme } from "@react-navigation/native";
 
-const HomeScreen = ({navigation}) => {
-    return (
-        <View style={styles.container}>
-            <Text>HomeScreen</Text>
-            <Button title="Go to DetailScreen" onPress={()=> navigation.navigate("Detail")} />
-        </View>
-    )
-}
+const HomeScreen = ({ navigation }) => {
+  const { colors } = useTheme();
 
-export default HomeScreen
+  return (
+    <View style={styles.container}>
+      <Text style={{ color: colors.text }}>HomeScreen</Text>
+      <Button
+        title="Go to DetailScreen"
+        onPress={() => navigation.navigate("Detail")}
+      />
+    </View>
+  );
+};
+
+export default HomeScreen;
 
 const styles = StyleSheet.create({
-    container :{
-        flex:1, 
-        justifyContent:"center",
-        alignItems:"center"
-    }
-})
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});

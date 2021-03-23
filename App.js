@@ -4,7 +4,11 @@ import { View, ActivityIndicator,
     // AsyncStorage
     // AsyncStorage has been extracted from react-native core and will be removed in a future release. It can now be installed and imported from @react-native-community/async-storage instead of 'react-native'.
  } from "react-native";
-import { NavigationContainer, DarkTheme } from "@react-navigation/native";
+import { 
+  NavigationContainer, 
+  DefaultTheme as NavigationDefaultTheme,
+  DarkTheme as NavigationDarkTheme,
+ } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import RoutesTab from "./navigation/RoutesTab";
 
@@ -25,22 +29,51 @@ import RootStackScreen from "./navigation/RootStackScreen";
 import {
   Provider as PaperProvider,
   DarkTheme as PaperDarkTheme,
+  DefaultTheme as PaperDefaultTheme
 //   Provider,
 } from "react-native-paper";
 
-const Drawer = createDrawerNavigator();
+const Drawer = createDrawerNavigator()
+
 
 // const position = pos == "right" ? "left" : "right";
 
 const App = () => {
+
+  const [isDarkTheme , setIsDarkTheme] = useState(false)
+
   // const [isLoading, setIsLoading] = useState(true)
   // const [userToken, setUserToken] = useState(null)
+
+  const CustomDefaultTheme = {
+    ...NavigationDefaultTheme,
+    ...PaperDefaultTheme,
+    colors: {
+      ...NavigationDefaultTheme.colors,
+      ...PaperDefaultTheme.colors, 
+      background: '#fff',
+      text: '#333333'
+    },
+  }
+
+  const CustomDarkTheme = {
+    ...NavigationDarkTheme,
+    ...PaperDarkTheme,
+    colors: {
+      ...NavigationDarkTheme.colors,
+      ...PaperDarkTheme.colors, 
+      background: '#333333',
+      text: '#fff'
+    },
+  }
+
+  const theme = isDarkTheme ? CustomDarkTheme : CustomDefaultTheme
 
   const initialLoginState = {
     isLoading: true,
     userName: null,
     userToken: null,
-  };
+  }
 
   const loginReducer = (state = initialLoginState, action) => {
     switch (action.type) {
@@ -112,9 +145,10 @@ const App = () => {
         // setUserToken("kachi");
         // setIsLoading(false);
       },
-    }),
-    []
-  );
+      toggleTheme: () => {
+        setIsDarkTheme( isDarkTheme => !isDarkTheme)
+      }
+    }), []);
 
   useEffect(() => {
     setTimeout(async() => {
@@ -139,9 +173,9 @@ const App = () => {
   }
 
   return (
-    <PaperProvider theme={PaperDarkTheme}>
+    <PaperProvider theme={theme}>
       <AuthContext.Provider value={authContext}>
-        <NavigationContainer theme={DarkTheme}>
+        <NavigationContainer theme={theme}>
           {state.userToken !== null ? (
             <Drawer.Navigator
               drawerContent={(props) => <DrawerContent {...props} />}
