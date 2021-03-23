@@ -112,7 +112,7 @@ const SignUpScreen = ({navigation}) => {
             return userName == item.username,item.email && password == item.password, item.confirm_password;
         })
 
-        if (data.username.length == 0 || data.password.length == 0) {
+        if (data.username.length,data.email.length == 0 || data.password.length,data.confirm_password.length == 0) {
             Alert.alert('Wrong Input!', 'Username or password cannot be empty.', [
                 {text: 'Yes Okay', onPress : () => console.log('pressed okay') },
                 {text: 'No Okay', onPress : () => console.log('pressed okay') }
