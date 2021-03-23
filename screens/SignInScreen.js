@@ -6,9 +6,12 @@ import * as Animatable from "react-native-animatable"
 
 import { AuthContext } from "../components/Context"
 import Users from '../usermodal/UserModal'
+import { useTheme } from "@react-navigation/native";
 
 
 const SignInScreen = ({navigation}) => {
+
+    const { colors } = useTheme()
 
     const { signIn } = React.useContext(AuthContext)
     
@@ -116,11 +119,15 @@ const SignInScreen = ({navigation}) => {
                 <Text style={styles.text_header}>Welcome!</Text>
             </View>
             <Animatable.View animation="fadeInUpBig"
-             style={styles.footer}>
-                <Text style={styles.text_footer}>Email</Text>
+             style={[styles.footer, { backgroundColor: colors.background}]}>
+                <Text style={[styles.text_footer], {color: colors.text}}>Email</Text>
                 <View style={styles.action}>
-                    <FontAwesome name="user-o" color="#05375a" size={20} />
-                    <TextInput placeholder="Email or Username" style={styles.textInput} onChangeText={(val)=> TextInputChange(val)} onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}  />
+                    <FontAwesome name="user-o" 
+                    color={ colors.text}
+                    // color="#05375a"
+                     size={20} 
+                     />
+                    <TextInput placeholder="Email or Username" style={[styles.textInput, {color: colors.text}]} onChangeText={(val)=> TextInputChange(val)} onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}  />
                    {data.check_textInputChange ?  
                   <Animatable.View
                     animation="bounceIn">
@@ -135,10 +142,14 @@ const SignInScreen = ({navigation}) => {
                     )}
 
                 {/* Password */}
-                <Text style={[styles.text_footer, {marginTop: 35}]}>Password</Text>
+                <Text style={[styles.text_footer, {marginTop: 35, color: colors.text}]}>Password</Text>
                 <View style={styles.action}>
-                    <FontAwesome name="lock" color="#05375a" size={20} />
-                    <TextInput style={styles.textInput} placeholder="Password" secureTextEntry={data.secureTextEntry ? true : false} autoCapitalize="none" onChangeText={(val)=> handlePassword(val)} onEndEditing={(e) => handleValidPassword(e.nativeEvent.text)}  />
+                    <FontAwesome name="lock" 
+                    color={colors.text} 
+                    // color="#05375a" 
+                    size={20} 
+                    />
+                    <TextInput style={[styles.textInput , { color: colors.text}]} placeholder="Password" secureTextEntry={data.secureTextEntry ? true : false} autoCapitalize="none" onChangeText={(val)=> handlePassword(val)} onEndEditing={(e) => handleValidPassword(e.nativeEvent.text)}  />
                     <TouchableOpacity onPress={updateSecureTextEntry}>
                         {data.secureTextEntry ?
                         <Feather name="eye-off" color="grey" size={20} /> 
