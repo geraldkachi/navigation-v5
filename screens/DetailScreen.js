@@ -1,13 +1,17 @@
 import React from 'react'
 import { StyleSheet, Text, View, Button } from 'react-native'
+import { useTheme } from "@react-navigation/native";
 
-const DetailScreen = ({navigation}) => {
+const DetailScreen = ({ navigation }) => {
+
+    const { colors } = useTheme()
+
     return (
         <View style={styles.container}>
-            <Text>DetailScreen</Text>
+            <Text style={{color: colors.text}}>DetailScreen</Text>
             <Button title="Go to HomeScreen" onPress={()=> {navigation.navigate("Home")}} />
             <Button title="Go to Back to Previous Screen" onPress={()=> {navigation.goBack()}} />
-            <Button title="Go to DetailScreen" onPress={()=> {navigation.navigate("Detail")}} />
+            <Button title="Go to ProfileScreen" onPress={()=> {navigation.navigate("ProfileScreen")}} />
         </View>
     )
 }

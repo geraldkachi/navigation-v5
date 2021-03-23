@@ -1,12 +1,18 @@
 import React from 'react'
 import { Alert, StyleSheet, Text, View, Button } from 'react-native'
 import Center from "../components/Center"
+import { useTheme } from "@react-navigation/native";
 
-const ExploreScreen = () => {
+const ExploreScreen = ({ navigation }) => {
+
+    const { colors } = useTheme()
     return (
         <Center>
-            <Text>ExploreScreen</Text>
-            <Button title="Click Me" onPress={()=> Alert.alert("Button Clicked")} />
+            <Text style={{color: colors.text}}>ExploreScreen</Text>
+            <Button title="Click Me" onPress={()=> {
+                Alert.alert("Button Clicked"),
+                navigation.goBack()
+            }} />
         </Center>
     )
 }

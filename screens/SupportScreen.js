@@ -2,11 +2,15 @@
 import React from 'react'
 import { Alert, StyleSheet, Text, Button} from 'react-native'
 import Center from "../components/Center"
+import { useTheme } from "@react-navigation/native";
 
 const SupportScreen = () => {
+
+    const { colors } = useTheme()
+
     return (
         <Center>
-            <Text>SupportScreen</Text>
+            <Text style={{color: colors.text}}>SupportScreen</Text>
             <Button title="Click Me" onPress={()=>{Alert.alert("SupportScreen Clicked")}}/>
         </Center>
     )
