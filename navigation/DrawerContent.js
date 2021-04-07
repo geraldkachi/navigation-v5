@@ -2,6 +2,7 @@ import React  from 'react'
 import { StyleSheet,View} from 'react-native'
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer"
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
+import  {Ionicons} from "react-native-vector-icons"
 import { 
     Avatar, 
     Title, 
@@ -66,7 +67,7 @@ import { AuthContext }  from "../components/Context"
                         <DrawerItem icon={({color,size})=> (<Icon name="bookmark-outline" color={color} size={size} />)}
                             label="Bookmarks"
                             onPress={()=> {props.navigation.navigate("BookmarkScreen")}} />
-                        <DrawerItem icon={({color,size})=> (<Icon name="settings-outline" color={color} size={size} />)}
+                        <DrawerItem icon={({color,size})=> (<Ionicons name="settings-outline" color={color} size={size} />)}
                             label="Settings"
                             onPress={()=> {props.navigation.navigate("SettingsScreen")}} />
                         <DrawerItem icon={({color,size})=> (<Icon name="account-check-outline" color={color} size={size} />)}

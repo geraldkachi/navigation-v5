@@ -154,7 +154,7 @@ const SignUpScreen = ({navigation}) => {
                    }
                 </View>
                 {data.isValidUser ? (null) : (
-                   <Animatable.View animation="fadeInLeft" duration={500}>
+                   <Animatable.View animation="fadeInLeft" duration='500'>
                         <Text style={styles.errorMsg}>Username must be 4 characters long.</Text>
                    </Animatable.View>
                 )}
@@ -172,7 +172,7 @@ const SignUpScreen = ({navigation}) => {
                     </TouchableOpacity>
                 </View>
                 {data.isValidPassword ? (null) : (
-                    <Animatable.View animation="fadeInLeft" duration={500}>
+                    <Animatable.View animation="fadeInLeft" duration='500'>
                         <Text style={styles.errorMsg}>Password must be 8 characters long.</Text>
                    </Animatable.View>
                      )} 
@@ -191,7 +191,7 @@ const SignUpScreen = ({navigation}) => {
                     </TouchableOpacity>
                 </View>
                 {data.isValidComfirmPassword ? (null) : (
-                    <Animatable.View animation="fadeInLeft" duration={500}>
+                    <Animatable.View animation="fadeInLeft" duration='500'>
                         <Text style={styles.errorMsg}>Comfirm Password must be 8 characters long.</Text>
                    </Animatable.View>
                      )} 
@@ -258,10 +258,10 @@ const styles = StyleSheet.create({
     textInput:{
         flex:1,
         marginTop: Platform.OS === "ios" ? 0 : -12,
-        paddingleft: 10,
+        paddingLeft: 10,
         color:"#05375a",
         marginLeft: 10,
-        border:0
+        // border:0
     },
     button:{
        alignItems:"center",        
