@@ -1,14 +1,24 @@
 import "react-native-gesture-handler";
 import React, { useEffect, useState, useMemo, useReducer } from "react";
-import { View, ActivityIndicator, 
-    // AsyncStorage
-    // AsyncStorage has been extracted from react-native core and will be removed in a future release. It can now be installed and imported from @react-native-community/async-storage instead of 'react-native'.
- } from "react-native";
-import { 
-  NavigationContainer, 
+import {
+  View,
+  ActivityIndicator,
+  // AsyncStorage
+  // AsyncStorage has been extracted from react-native core and will be removed in a future release. It can now be installed and imported from @react-native-community/async-storage instead of 'react-native'.
+} from "react-native";
+import {
+  NavigationContainer,
   DefaultTheme as NavigationDefaultTheme,
   DarkTheme as NavigationDarkTheme,
- } from "@react-navigation/native";
+} from "@react-navigation/native";
+
+import {
+  Provider as PaperProvider,
+  DarkTheme as PaperDarkTheme,
+  DefaultTheme as PaperDefaultTheme,
+  //   Provider,
+} from "react-native-paper";
+
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import RoutesTab from "./navigation/RoutesTab";
 
@@ -18,7 +28,7 @@ import SettingsScreen from "./screens/SettingsScreen";
 import BookmarkScreen from "./screens/BookmarkScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // import {HomeStackScreen,DetailStackScreen } from "./navigation/RoutesTab"
 
@@ -26,21 +36,12 @@ import { AuthContext } from "./components/Context";
 
 import RootStackScreen from "./navigation/RootStackScreen";
 
-import {
-  Provider as PaperProvider,
-  DarkTheme as PaperDarkTheme,
-  DefaultTheme as PaperDefaultTheme
-//   Provider,
-} from "react-native-paper";
-
-const Drawer = createDrawerNavigator()
-
+const Drawer = createDrawerNavigator();
 
 // const position = pos == "right" ? "left" : "right";
 
 const App = () => {
-
-  const [isDarkTheme , setIsDarkTheme] = useState(false)
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
 
   // const [isLoading, setIsLoading] = useState(true)
   // const [userToken, setUserToken] = useState(null)
@@ -50,30 +51,30 @@ const App = () => {
     ...PaperDefaultTheme,
     colors: {
       ...NavigationDefaultTheme.colors,
-      ...PaperDefaultTheme.colors, 
-      background: '#fff',
-      text: '#333333'
+      ...PaperDefaultTheme.colors,
+      background: "#fff",
+      text: "#333333",
     },
-  }
+  };
 
   const CustomDarkTheme = {
     ...NavigationDarkTheme,
     ...PaperDarkTheme,
     colors: {
       ...NavigationDarkTheme.colors,
-      ...PaperDarkTheme.colors, 
-      background: '#333333',
-      text: '#fff'
+      ...PaperDarkTheme.colors,
+      background: "#333333",
+      text: "#fff",
     },
-  }
+  };
 
-  const theme = isDarkTheme ? CustomDarkTheme : CustomDefaultTheme
+  const theme = isDarkTheme ? CustomDarkTheme : CustomDefaultTheme;
 
   const initialLoginState = {
     isLoading: true,
     userName: null,
     userToken: null,
-  }
+  };
 
   const loginReducer = (state = initialLoginState, action) => {
     switch (action.type) {
@@ -113,54 +114,55 @@ const App = () => {
   //  const [state, dispatch] = useReducer(loginReducer, initialLoginState, init)
   const [state, dispatch] = useReducer(loginReducer, initialLoginState);
 
-  const authContext = useMemo(() => ({
-      signIn: async(foundUser) => {
-
-        const userToken = String(foundUser[0].userToken)
-        const userName = foundUser[0].username
+  const authContext = useMemo(
+    () => ({
+      signIn: async (foundUser) => {
+        const userToken = String(foundUser[0].userToken);
+        const userName = foundUser[0].username;
         // if (userName == "user" && password == "pass") {
-          try {
-            userToken = "geraldkachi";
-            await AsyncStorage.setItem('userToken', userToken)
-          } catch (e) {
-              console.log(e);
-          }
+        try {
+          userToken = "geraldkachi";
+          await AsyncStorage.setItem("userToken", userToken);
+        } catch (e) {
+          console.log(e);
+        }
         // }
         dispatch({ type: "LOGIN", id: userName, token: userToken });
         // setUserToken("kachi")
         // setIsLoading(false)
       },
-      signOut: async() => {
-          try {
-              await AsyncStorage.removeItem('userToken')
-            } catch (e) {
-                console.log(e);
-            }
-            dispatch({ type: "LOGOUT" });
+      signOut: async () => {
+        try {
+          await AsyncStorage.removeItem("userToken");
+        } catch (e) {
+          console.log(e);
+        }
+        dispatch({ type: "LOGOUT" });
         // setUserToken(null);
         // setIsLoading(false);
-        
       },
-      signUp: async() => {
+      signUp: async () => {
         // setUserToken("kachi");
         // setIsLoading(false);
       },
       toggleTheme: () => {
-        setIsDarkTheme( isDarkTheme => !isDarkTheme)
-      }
-    }), []);
+        setIsDarkTheme((isDarkTheme) => !isDarkTheme);
+      },
+    }),
+    []
+  );
 
   useEffect(() => {
-    setTimeout(async() => {
-        let userToken;
-        userToken = null
-        try {
-            userToken = await AsyncStorage.getItem('userToken')
-          } catch (e) {
-              console.log(e);
-          } 
-    //   setIsLoading(false);
-    dispatch({ type: "REGISTER" , token: userToken })
+    setTimeout(async () => {
+      let userToken;
+      userToken = null;
+      try {
+        userToken = await AsyncStorage.getItem("userToken");
+      } catch (e) {
+        console.log(e);
+      }
+      //   setIsLoading(false);
+      dispatch({ type: "REGISTER", token: userToken });
     }, 1000);
   }, []);
 
@@ -233,8 +235,6 @@ export default App;
 //         </NavigationContainer>
 //     )
 // }
-
-
 
 // Valid style props: [
 //   "alignContent",
